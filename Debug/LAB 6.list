@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  16 .debug_macro  00016127  00000000  00000000  0002fda8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   00009840  00000000  00000000  00045ecf  2**0
+ 17 .debug_line   0000983e  00000000  00000000  00045ecf  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    0008d9aa  00000000  00000000  0004f70f  2**0
+ 18 .debug_str    0008d9aa  00000000  00000000  0004f70d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000dd0b9  2**0
+ 19 .comment      0000007b  00000000  00000000  000dd0b7  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00003990  00000000  00000000  000dd134  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -1220,11 +1220,7 @@ int main(void)
  8000e7a:	b29a      	uxth	r2, r3
  8000e7c:	4b21      	ldr	r3, [pc, #132]	; (8000f04 <main+0x1ac>)
  8000e7e:	801a      	strh	r2, [r3, #0]
-//		}
-//		if (Vout <= 1.002 && Vout > 1.000)
-//		{
-//			wantedPWM -= 1;
-//		}
+		}
 		Vout = wantedPWM * 3.3*ADCFeedBack/40960000;
  8000e80:	4b20      	ldr	r3, [pc, #128]	; (8000f04 <main+0x1ac>)
  8000e82:	881b      	ldrh	r3, [r3, #0]

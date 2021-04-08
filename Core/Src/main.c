@@ -148,14 +148,6 @@ int main(void)
 		{
 			wantedPWM = 40960000.00/(ADCFeedBack*3.3);
 		}
-//		if (Vout >= 0.998 && Vout < 1.000)
-//		{
-//			wantedPWM += 1;
-//		}
-//		if (Vout <= 1.002 && Vout > 1.000)
-//		{
-//			wantedPWM -= 1;
-//		}
 		Vout = wantedPWM * 3.3*ADCFeedBack/40960000;
 
 		}
