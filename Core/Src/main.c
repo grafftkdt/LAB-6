@@ -134,21 +134,23 @@ int main(void)
 		TimeOutputLoop = micros();
 		// #001
 		//Vout = Vin * PWM >> PWM 1 unit > Vin/PWM
-		//Vin = ADCFeedBack
-		//PWM >> 0 - 10000
+		//Vin คำนวณจาก  ADCFeedBack
+		//PWM >> 0 - 10000		//PWMmax = 10000
 		//Wanted Range >> 0 - 3.3
 		//Resolution >> ADCFeedBak*3.3/2^12 >> Wanted Vin
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, wantedPWM);
 		//ADC 12 bit >> 4096
 		if (Vout < 1)
 		{
+			//wanted Vout = 1 >> wantedPWM = 1*12bit*PWMmax/(Vin*ADCFeedback)
 			wantedPWM = 40960000.00/(ADCFeedBack*3.3);
 		}
 		else if (Vout > 1)
 		{
 			wantedPWM = 40960000.00/(ADCFeedBack*3.3);
 		}
-		Vout = wantedPWM * 3.3*ADCFeedBack/40960000;
+		//Vout = Vin * (ADCFeedback/12bit) * (PWM/PWMmax)
+		Vout = 3.3*ADCFeedBack/40960000*wantedPWM;
 
 		}
 

@@ -1143,8 +1143,8 @@ int main(void)
  8000dd2:	4a4b      	ldr	r2, [pc, #300]	; (8000f00 <main+0x1a8>)
  8000dd4:	e9c2 3400 	strd	r3, r4, [r2]
 		//Vout = Vin * PWM >> PWM 1 unit > Vin/PWM
-		//Vin = ADCFeedBack
-		//PWM >> 0 - 10000
+		//Vin คำนวณจาก  ADCFeedBack
+		//PWM >> 0 - 10000		//PWMmax = 10000
 		//Wanted Range >> 0 - 3.3
 		//Resolution >> ADCFeedBak*3.3/2^12 >> Wanted Vin
 		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, wantedPWM);
@@ -1162,6 +1162,7 @@ int main(void)
  8000df0:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
  8000df4:	d51d      	bpl.n	8000e32 <main+0xda>
 		{
+			//wanted Vout = 1 >> wantedPWM = 1*12bit*PWMmax/(Vin*ADCFeedback)
 			wantedPWM = 40960000.00/(ADCFeedBack*3.3);
  8000df6:	4b45      	ldr	r3, [pc, #276]	; (8000f0c <main+0x1b4>)
  8000df8:	881b      	ldrh	r3, [r3, #0]
@@ -1221,8 +1222,9 @@ int main(void)
  8000e7c:	4b21      	ldr	r3, [pc, #132]	; (8000f04 <main+0x1ac>)
  8000e7e:	801a      	strh	r2, [r3, #0]
 		}
-		Vout = wantedPWM * 3.3*ADCFeedBack/40960000;
- 8000e80:	4b20      	ldr	r3, [pc, #128]	; (8000f04 <main+0x1ac>)
+		//Vout = Vin * (ADCFeedback/12bit) * (PWM/PWMmax)
+		Vout = 3.3*ADCFeedBack/40960000*wantedPWM;
+ 8000e80:	4b22      	ldr	r3, [pc, #136]	; (8000f0c <main+0x1b4>)
  8000e82:	881b      	ldrh	r3, [r3, #0]
  8000e84:	4618      	mov	r0, r3
  8000e86:	f7ff faf9 	bl	800047c <__aeabi_i2d>
@@ -1231,24 +1233,24 @@ int main(void)
  8000e90:	f7ff fb5e 	bl	8000550 <__aeabi_dmul>
  8000e94:	4603      	mov	r3, r0
  8000e96:	460c      	mov	r4, r1
- 8000e98:	4625      	mov	r5, r4
- 8000e9a:	461c      	mov	r4, r3
- 8000e9c:	4b1b      	ldr	r3, [pc, #108]	; (8000f0c <main+0x1b4>)
- 8000e9e:	881b      	ldrh	r3, [r3, #0]
- 8000ea0:	4618      	mov	r0, r3
- 8000ea2:	f7ff faeb 	bl	800047c <__aeabi_i2d>
- 8000ea6:	4602      	mov	r2, r0
- 8000ea8:	460b      	mov	r3, r1
- 8000eaa:	4620      	mov	r0, r4
- 8000eac:	4629      	mov	r1, r5
- 8000eae:	f7ff fb4f 	bl	8000550 <__aeabi_dmul>
- 8000eb2:	4603      	mov	r3, r0
- 8000eb4:	460c      	mov	r4, r1
- 8000eb6:	4618      	mov	r0, r3
- 8000eb8:	4621      	mov	r1, r4
- 8000eba:	f04f 0200 	mov.w	r2, #0
- 8000ebe:	4b14      	ldr	r3, [pc, #80]	; (8000f10 <main+0x1b8>)
- 8000ec0:	f7ff fc70 	bl	80007a4 <__aeabi_ddiv>
+ 8000e98:	4618      	mov	r0, r3
+ 8000e9a:	4621      	mov	r1, r4
+ 8000e9c:	f04f 0200 	mov.w	r2, #0
+ 8000ea0:	4b1b      	ldr	r3, [pc, #108]	; (8000f10 <main+0x1b8>)
+ 8000ea2:	f7ff fc7f 	bl	80007a4 <__aeabi_ddiv>
+ 8000ea6:	4603      	mov	r3, r0
+ 8000ea8:	460c      	mov	r4, r1
+ 8000eaa:	4625      	mov	r5, r4
+ 8000eac:	461c      	mov	r4, r3
+ 8000eae:	4b15      	ldr	r3, [pc, #84]	; (8000f04 <main+0x1ac>)
+ 8000eb0:	881b      	ldrh	r3, [r3, #0]
+ 8000eb2:	4618      	mov	r0, r3
+ 8000eb4:	f7ff fae2 	bl	800047c <__aeabi_i2d>
+ 8000eb8:	4602      	mov	r2, r0
+ 8000eba:	460b      	mov	r3, r1
+ 8000ebc:	4620      	mov	r0, r4
+ 8000ebe:	4629      	mov	r1, r5
+ 8000ec0:	f7ff fb46 	bl	8000550 <__aeabi_dmul>
  8000ec4:	4603      	mov	r3, r0
  8000ec6:	460c      	mov	r4, r1
  8000ec8:	4618      	mov	r0, r3
